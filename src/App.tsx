@@ -1,19 +1,56 @@
-import React, { Component } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useCallback, useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.scss";
 import HistoricPrice from "./HistoricPrice";
 import CurrentPrice from "./CurrentPrice";
 import CurrencyChoice from "./CurrencyChoice";
+import { params, endpoints, fetchData } from "./helpers";
 
-class App extends Component {
-  render() {
-    return(
-      <div className = "App">
-        <CurrentPrice />
-        <CurrencyChoice />
-        <HistoricPrice />
-      </div>   
-    )
-  }
+export default function App() {
+  const [coinPrice, setCoinPrice] = useState<String>("");
+  const [coinData, setCoinData] = useState<params[]>([]);
+
+  const getHistoricData = useCallback(async (currency: string = "USD") => {
+    const url = `${endpoints.historicPrice}${currency}`;
+    const response = await fetchData(url);
+
+    if (response) {
+      let data: any[] = [];
+      for (const [date, price] of Object.entries(response.bpi)) {
+        data.push({ date, price });
+      }
+
+      data = data.slice(-10);
+      setCoinData(data);
+    }
+  }, []);
+
+  const getDailyData = useCallback(async (currency: string = "USD") => {
+    const url = `${endpoints.currentPrice}${currency}.json`;
+    const response = await fetchData(url);
+    if (response) {
+      console.log(response.bpi[currency]);
+      setCoinPrice(response.bpi[currency].rate);
+    }
+  }, []);
+
+  useEffect(() => {
+    getDailyData();
+    getHistoricData();
+  }, []);
+
+  return (
+    <div className="container App">
+      <div className="currentPrice">
+        <CurrentPrice rate={coinPrice} />
+        <CurrencyChoice
+          updatePrice={getDailyData}
+          updateHistory={getHistoricData}
+        />
+      </div>
+      <HistoricPrice data={coinData} />
+    </div>
+  );
 }
 
-export default App
+
