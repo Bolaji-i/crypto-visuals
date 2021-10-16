@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import axios from "axios";
+import React from "react";
 import {
   AreaChart,
   Area,
@@ -11,31 +9,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function HistoricPrice() {
-  const [coinData, setCoinData] = useState([]);
 
-  useEffect(() => {
-    const mainUrl =
-      "https://api.coindesk.com/v1/bpi/historical/close.json?currency=";
-    let url = `${mainUrl}/USD`;
-
-    axios
-      .get(url)
-      .then((res) => {
-        console.log(res.data);
-        setCoinData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  let data = coinData;
+export default function HistoricPrice(props: any): any {
+  
   return (
     <ResponsiveContainer width="100%" aspect={3}>
       <AreaChart
         width={500}
         height={400}
-        data={data}
+        data={props.data}
         margin={{
           top: 10,
           right: 30,
@@ -43,11 +25,11 @@ export default function HistoricPrice() {
           bottom: 0,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="4 4" />
         <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
-        <Area type="monotone" dataKey="bpi" stroke="#8864c8" fill="#8864c8" />
+        <Area type="monotone" dataKey="price" stroke="#4864c8" fill="#4864c8" />
       </AreaChart>
     </ResponsiveContainer>
   );
