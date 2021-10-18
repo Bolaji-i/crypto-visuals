@@ -1,0 +1,22 @@
+
+$font-stack: 'Andada Pro', serif, Helvetica, sans-serif;
+$price-color: rgb(8, 104, 56);
+
+
+.coinPrice {
+  font: 100% $font-stack;
+  color: $price-color;
+  font-size: xx-large;
+  margin-top: 8px; 
+}
+.form-select:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+.priceDisplay {
+  display: inline-flex;
+  flex-direction: row;
+}
+#formSelect {
+  margin: 0px 0px 10px 5px;
+}

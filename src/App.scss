@@ -1,3 +1,14 @@
+$font-stack: 'Andada Pro', serif, Helvetica, sans-serif;
+$paragh-color: #4864c8;
+
+
 .App {
   text-align: center;
+  margin-top: 20px;
+  .paragh {
+    color: $paragh-color;
+    font-family: $font-stack;
+    margin: 20px;
+    font-size: larger;
+  }
 }

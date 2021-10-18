@@ -3,14 +3,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 import HistoricPrice from "./HistoricPrice";
 import CurrentPrice from "./CurrentPrice";
-import CurrencyChoice from "./CurrencyChoice";
 import { params, endpoints, fetchData } from "./helpers";
 
 export default function App() {
   const [coinPrice, setCoinPrice] = useState<String>("");
   const [coinData, setCoinData] = useState<params[]>([]);
 
-  const getHistoricData = useCallback(async (currency: string = "USD") => {
+  const getHistoricData = useCallback(async (currency: string = "EUR") => {
     const url = `${endpoints.historicPrice}${currency}`;
     const response = await fetchData(url);
 
@@ -25,7 +24,7 @@ export default function App() {
     }
   }, []);
 
-  const getDailyData = useCallback(async (currency: string = "USD") => {
+  const getDailyData = useCallback(async (currency: string = "EUR") => {
     const url = `${endpoints.currentPrice}${currency}.json`;
     const response = await fetchData(url);
     if (response) {
@@ -42,13 +41,13 @@ export default function App() {
   return (
     <div className="container App">
       <div className="currentPrice">
-        <CurrentPrice rate={coinPrice} />
-        <CurrencyChoice
-          updatePrice={getDailyData}
-          updateHistory={getHistoricData}
+        <CurrentPrice rate={coinPrice}
+         updatePrice={getDailyData}
+         updateHistory={getHistoricData}
         />
       </div>
       <HistoricPrice data={coinData} />
+      <p className="paragh">Chart shows the price of bitcoin for the past 10 days.</p>
     </div>
   );
 }
